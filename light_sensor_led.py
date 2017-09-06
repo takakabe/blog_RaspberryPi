@@ -57,7 +57,7 @@ try:
     while True:
         inputVal0 = readadc(0, SPICLK, SPIMOSI, SPIMISO, SPICS)
 
-        if inputVal0 < 2000:
+        if inputVal0 < 1500:
             GPIO.output(LED, GPIO.HIGH)
         else:
             GPIO.output(LED, GPIO.LOW)
