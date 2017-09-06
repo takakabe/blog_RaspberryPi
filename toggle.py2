@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import RPi.GPIO as GPIO
+from time import sleep
+
+######################
+# 関数 my_callback
+######################
+def my_callback(channnel):
+    # GPIO.HIGHならLOWに、LOWならHIGHに設定
+    output= not GPIO.input(15)
+    GPIO.output(15,output)
+
+
+GPIO.setmode(GPIO.BCM)
+
+# initial = GPIO.LOWとすることでプログラム実行時にLEDのが消灯された状態になる
+GPIO.setup(15, GPIO.OUT, initial=GPIO.LOW)
+
+# pull_up_down=GPIO.PUD_DOWNでプルダウン抵抗を設定している
+GPIO.setup(14, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+# GPIO.RISING トグルスイッチがおされたとき 
+# bouncetime=300 一度イベントを検出したら300ミリ秒が次のイベントを検出しないよう設定
+GPIO.add_event_detect(14, GPIO.RISING, callback=my_callback, bouncetime=300)
+
+
+# プログラムが終了しないように無限ループさせている
+try:
+    while True:
+        sleep(0.01)
+
+except KeyboardInterrupt:
+    pass
+
+
+GPIO.cleanup()
